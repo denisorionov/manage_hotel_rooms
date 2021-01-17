@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Jekyll v4.0.1">
+    <title>Сервис для управления номерами отелей и бронированиями</title>
+
+
+
+    <!-- Bootstrap core CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+  </head>
+  <body>
+
+
+<main class="container mt-3">
+    <section>
+      <h1 class="h1 text-center mx-auto mt-4 pt-5" style="font-size: 70px;"><strong>Все номера</strong></h1>
+      <p class="text-center pt-1">Cервис для управления номерами отелей и бронированиями</p>
+      <div class="row mt-5">
+  {% for room in rooms %}
+          <div class="col-12 col-lg-8 offset-lg-2 m-auto">
+          <div class="card mb-4">
+            <div class="card-body px-4">
+              <div class="row">
+                <div class="col-8 col-md-8 col-lg-9">
+                  <a class="navbar-brand mr-4 font-weight-bold" href="" style="color: black"><h2 class="h2 pb-2">{{ room.description }}</h2></a>
+                  <p class="mb-2">{{ room.price }} руб. ночь</p>
+                  <button type="button" class="btn btn-primary">Забронировать</button>
+                </div>
+
+              </div>
+            </div>
+          </div>
+      </div>
+    {% endfor %}
+  </div>
+  </div>
+
+</body>
+</html>
