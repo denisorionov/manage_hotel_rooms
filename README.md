@@ -85,10 +85,11 @@ Django Rest Framework 3.12.
 ## Установка проекта.
 1. [Установить Python.](https://www.python.org/downloads/)
 2. Скачать проект.
-2. Создать виртуальное окружение: python -m venv env
-3. Активировать виртуальное окружение: source env/scripts/activate
-4. Установить зависимости: pip install -r requirements.txt
-5. Запустить проект: ./manage.py runserver
-6. Открыть в браузере: http://localhost:8000.
+3. Создать виртуальное окружение: python -m venv env
+4. Активировать виртуальное окружение: source env/scripts/activate
+5. Установить зависимости: pip install -r requirements.txt
+6. Создать базу данных и указать данные в файле settings.py DATABASES
+7. Запустить проект: ./manage.py runserver
+8. Открыть в браузере: http://localhost:8000.
 
 PS: в ближайшее время будут добавлены юнит-тесты.
