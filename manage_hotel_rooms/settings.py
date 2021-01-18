@@ -78,11 +78,11 @@ WSGI_APPLICATION = 'manage_hotel_rooms.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'ManageHotelRooms',
-        'USER': 'postgres',
-        'PASSWORD': '12345678',
-        'HOST': 'localhost',
-        'PORT': '',
+        'NAME': 'd7vtieda2imfvm',
+        'USER': 'xmiptwshdzfkhy',
+        'PASSWORD': '53dcce1373d10cc01ff7805ff2dbd90bacaf8a3f3291caca0e31122c0e89ce98',
+        'HOST': 'ec2-3-251-0-202.eu-west-1.compute.amazonaws.com',
+        'PORT': '5432',
     }
 }
 
