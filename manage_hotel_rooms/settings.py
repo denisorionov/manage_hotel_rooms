@@ -77,7 +77,7 @@ WSGI_APPLICATION = 'manage_hotel_rooms.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'd7vtieda2imfvm',
         'USER': 'xmiptwshdzfkhy',
         'PASSWORD': '53dcce1373d10cc01ff7805ff2dbd90bacaf8a3f3291caca0e31122c0e89ce98',
