@@ -6,7 +6,7 @@ from hotel.views import view_main_page, room_api, booking_api, booking_create_ap
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', view_main_page),
-    path('rooms/', room_api),
-    path('room/id=<int:pk>/bookings/', booking_api),
-    path('booking/create/', booking_create_api)
+    path('rooms/', room_api, name='rooms'),
+    path('room/id=<int:pk>/bookings/', booking_api, name='bookings'),
+    path('booking/create/', booking_create_api, name='booking_create')
 ]
