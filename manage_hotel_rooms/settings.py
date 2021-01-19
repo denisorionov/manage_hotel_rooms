@@ -10,23 +10,26 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 import os
-from pathlib import Path
+
+import dj_database_url
+from environs import Env
+
+env = Env()
+env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'whyopdw6@!srh+&p=^3vaut_!6%-b1j4eblp70p8gl@l*sidj0'
+SECRET_KEY = env.str("SECRET_KEY", default='replace_me')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool("DEBUG", default=True)
 
-ALLOWED_HOSTS = ['*']
-
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default='localhost')
 
 # Application definition
 
@@ -71,21 +74,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'manage_hotel_rooms.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'd7vtieda2imfvm',
-        'USER': 'xmiptwshdzfkhy',
-        'PASSWORD': '53dcce1373d10cc01ff7805ff2dbd90bacaf8a3f3291caca0e31122c0e89ce98',
-        'HOST': 'ec2-3-251-0-202.eu-west-1.compute.amazonaws.com',
-        'PORT': '5432',
-    }
+    'default': dj_database_url.config()
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -127,11 +121,13 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATIC_ROOT = os.path.normpath(os.path.join(BASE_DIR, 'staticfiles'))
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
-)
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+try:
+    from .local_settings import *
+except ImportError:
+    pass
