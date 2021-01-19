@@ -91,7 +91,8 @@ Django Rest Framework 3.12.
 4. Активировать виртуальное окружение: source env/scripts/activate
 5. Установить зависимости: pip install -r requirements.txt
 6. Создать базу данных и указать данные в файле settings.py DATABASES
-7. Запустить проект: ./manage.py runserver
-8. Открыть в браузере: http://localhost:8000.
+7. Выполнить миграции ./manage.py migrate
+8. Запустить проект: ./manage.py runserver
+9. Открыть в браузере: http://localhost:8000.
 
 PS: в ближайшее время будут добавлены юнит-тесты.
