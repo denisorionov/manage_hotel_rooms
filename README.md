@@ -17,44 +17,53 @@ Django Rest Framework 3.12.
 
     Пример запроса:
     ```shell script
-    curl -X POST -d "description=одноместный номер Люкс" -d "price=5000" http://localhost:8000/rooms/
+    curl -X POST -d "description=Dorm" -d "price=1000"  https://manage-hotel.herokuapp.com/rooms/
     ```
     Ответ:
     ```shell script
-    {"room_id":10}
+    {"room_id":4}
     ```
 
 * **Удалить номер отеля и все его брони.** Принимает на вход ID номера отеля.
  
     Пример запроса:
     ```shell script
-    curl -X DELETE -d "room_id=5" http://localhost:8000/rooms/
+    curl -X DELETE -d "room_id=4" https://manage-hotel.herokuapp.com/rooms/
     ```
     Ответ:
     ```shell script
-    "room id 5 deleted"
-    или
-    "room id 5 not found"
+    "room id 4 deleted"
+    если номера с таким id не существует:
+    "room id 4 not found"
     ```
   
- * **Получить список номеров отеля.** Номера выводятся отсортированные по цене.
+ * **Получить список номеров отеля.** 
  
      Пример запроса:
     ```shell script
-    curl -X GET http://localhost:8000/rooms/
+    curl -X GET https://manage-hotel.herokuapp.com/rooms/
     ```
     Ответ:
     ```shell script
     [{"id":4,"description":"test","price":"100.00"},{"id":3,"description":"Эконом +","price":"5000.00"}]
     ```
-
+    Возможна сортировка по цене и id номера. 
+    Сортировка по цене:
+    ```shell script
+    curl -X GET https://manage-hotel.herokuapp.com/rooms/?ordering=price
+    ```
+   Для сортировки от большей цены к меньшей:
+   ```shell script
+   curl -X GET https://manage-hotel.herokuapp.com/rooms/?ordering=-price
+   ```
+    
 ## 2. Сервис имеет следующие хендлеры для работы со списком броней номеров:
 
  * **Добавить бронь.** Принимает на вход существующий ID номера отеля, дату начала, дату окончания брони. Возвращает ID брони.
     
     Пример запроса:
     ```shell script
-    curl -X POST -d "room_id=6" -d "date_start=2021-12-30" -d "date_end=2022-01-02" http://localhost:8000/booking/create/
+    curl -X POST -d "room_id=6" -d "date_start=2021-12-30" -d "date_end=2022-01-02" https://manage-hotel.herokuapp.com/bookings/ 
     ```
     Ответ:
     ```shell script
@@ -65,23 +74,23 @@ Django Rest Framework 3.12.
   
     Пример запроса:
     ```shell script
-    curl -X DELETE -d "booking_id=10" http://localhost:8000/room/id=6/bookings/
+    curl -X DELETE -d "booking_id=2" https://manage-hotel.herokuapp.com/bookings/
     ```
     Ответ:
     ```shell script
-    "booking id 10 deleted"
-    или
+    "booking id 2 deleted"
+    если брони с таким id не существует:
     "booking id 10 not found"
     ```
   * **Получить список броней номера отеля.** Принимает на вход ID номера отеля. Возвращает список бронирований. 
   Бронирования отсортированы по дате начала.
     Пример запроса:
     ```shell script
-    curl -X GET http://localhost:8000/room/id=3/bookings/
+    curl -X GET https://manage-hotel.herokuapp.com/bookings/?room_id=6
     ```
     Ответ:
     ```shell script
-    [{"id":11,"date_start":"2021-01-17","date_end":"2021-01-17"},{"id":12,"date_start":"2021-01-22","date_end":"2021-01-24"}]
+    [{"id":4,"date_start":"2020-12-30","date_end":"2021-01-02"},{"id":3,"date_start":"2021-12-30","date_end":"2022-01-02"}]
     ```
 
 ## Установка проекта.
@@ -94,5 +103,3 @@ Django Rest Framework 3.12.
 7. Выполнить миграции ./manage.py migrate
 8. Запустить проект: ./manage.py runserver
 9. Открыть в браузере: http://localhost:8000.
-
-PS: в ближайшее время будут добавлены юнит-тесты.

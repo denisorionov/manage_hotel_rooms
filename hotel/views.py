@@ -52,7 +52,7 @@ class BookingApiView(generics.ListAPIView):
         try:
             room = Room.objects.get(pk=request.data['room_id'])
         except Room.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            return Response(f"room id {request.data['room_id']} not found", status=status.HTTP_404_NOT_FOUND)
 
         serializer = BookingSerializer(data=request.data)
         if serializer.is_valid():
