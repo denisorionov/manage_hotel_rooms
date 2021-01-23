@@ -1,7 +1,9 @@
 from django.shortcuts import render
+from rest_framework import filters, generics
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from hotel.models import Room, Booking
 from hotel.serializers import RoomSerializer, BookingSerializer
@@ -12,21 +14,23 @@ def view_main_page(request):
     return render(request, template_name="index.html", context={'rooms': rooms})
 
 
-@api_view(['GET', 'POST', 'DELETE'])
-def room_api(request):
-    if request.method == 'GET':
-        rooms = Room.objects.all().order_by('price')
-        serializer = RoomSerializer(rooms, many=True)
-        return Response(serializer.data)
+class RoomApiView(generics.ListAPIView):
+    queryset = Room.objects.all()
+    serializer_class = RoomSerializer
+    filter_backends = [filters.OrderingFilter]
+    ordering_fields = ['price', 'id']
 
-    elif request.method == 'POST':
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+    def post(self, request):
         serializer = RoomSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response({'room_id': serializer.data['id']}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    elif request.method == 'DELETE':
+    def delete(self, request):
         try:
             room = Room.objects.get(pk=request.data['room_id'])
         except Room.DoesNotExist:
@@ -35,30 +39,16 @@ def room_api(request):
         return Response(f"room id {request.data['room_id']} deleted", status=status.HTTP_200_OK)
 
 
-@api_view(['GET', 'DELETE'])
-def booking_api(request, pk):
-    try:
-        room = Room.objects.get(pk=pk)
-    except Room.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+class BookingApiView(generics.ListAPIView):
+    queryset = Booking.objects.all().order_by('date_start')
+    serializer_class = BookingSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['room__id']
 
-    if request.method == 'GET':
-        bookings = room.bookings.order_by('date_start')
-        serializer = BookingSerializer(bookings, many=True)
-        return Response(serializer.data)
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
 
-    elif request.method == 'DELETE':
-        try:
-            booking = Booking.objects.get(pk=request.data['booking_id'])
-        except Booking.DoesNotExist:
-            return Response(f"booking id {request.data['booking_id']} not found", status=status.HTTP_404_NOT_FOUND)
-        booking.delete()
-        return Response(f"booking id {request.data['booking_id']} deleted", status=status.HTTP_200_OK)
-
-
-@api_view(['POST'])
-def booking_create_api(request):
-    if request.method == 'POST':
+    def post(self, request):
         try:
             room = Room.objects.get(pk=request.data['room_id'])
         except Room.DoesNotExist:
@@ -73,3 +63,11 @@ def booking_create_api(request):
             )
             return Response({'booking_id': booking.id}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request):
+        try:
+            booking = Booking.objects.get(pk=request.data['booking_id'])
+        except Booking.DoesNotExist:
+            return Response(f"booking id {request.data['booking_id']} not found", status=status.HTTP_404_NOT_FOUND)
+        booking.delete()
+        return Response(f"booking id {request.data['booking_id']} deleted", status=status.HTTP_200_OK)

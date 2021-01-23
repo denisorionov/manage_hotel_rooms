@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'hotel'
+    'hotel',
+    'django_filters'
 ]
 
 MIDDLEWARE = [
@@ -102,7 +103,8 @@ AUTH_PASSWORD_VALIDATORS = [
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
-    )
+    ),
+    'SEARCH_PARAM': 'room_id'
 }
 
 DATETIME_FORMAT = '%Y-%m-%d'
